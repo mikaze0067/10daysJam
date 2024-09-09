@@ -12,6 +12,14 @@ class Player;
 
 class Enemy {
 public:
+
+	enum class LRDirection {
+		kRight,
+		kLeft,
+	};
+
+
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -63,8 +71,23 @@ private:
 	//経過時間
 	float walkTimer_ = 0.0f;
 
+	//static inline const float kWidth = 0.8f;
+	//static inline const float kHeight = 0.8f;
+
+	// 旋回時間<秒>
+	static inline const float kTimeTurn = 0.3f;
 	static inline const float kWidth = 0.8f;
 	static inline const float kHeight = 0.8f;
+	static inline const float kBlank = 0.04f;
+	static inline const float kGroundSearchHeight = 0.06f;
 
+	// 旋回開始時の角度
+	float turnFirstRotationY_ = 0.0f;
+	// 旋回タイマー
+	float turnTimer_ = 0.0f;
+
+	void AnimateTurn();
+
+	LRDirection lrDirection_ = LRDirection::kLeft;
 
 };
