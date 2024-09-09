@@ -33,7 +33,9 @@ void CameraController::Update() {
 	//viewProjection_.translation_.y = std::max(viewProjection_.translation_.y, movableArea_.bottom);
 	//viewProjection_.translation_.y = std::min(viewProjection_.translation_.y, movableArea_.top);
 	
+	cameraMove += 0.001f;
 	
+	viewProjection_.translation_.y -= cameraMove;
 
 	//行列を更新する
 	viewProjection_.UpdateMatrix();
