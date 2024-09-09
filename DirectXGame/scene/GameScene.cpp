@@ -425,6 +425,11 @@ void GameScene::GenerateBlocks() {
 				worldTransformBlocks_[i][j] = damageBlock;
 				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
 
+				// ダメージブロックの場合の処理（必要に応じて）
+				if (type == MapChipType::kDamageBlock) {
+					// ダメージブロック固有の設定があればここで行う
+					// 例: worldTransformBlocks_[i][j]->SetDamageEffect() など
+				}
 			}
 			else {
 				worldTransformBlocks_[i][j] = nullptr;
