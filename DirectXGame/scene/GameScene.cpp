@@ -417,7 +417,6 @@ void GameScene::GenerateBlocks() {
 				if (type == MapChipType::kDamageBlock) {
 					// ダメージブロック固有の設定があればここで行う
 					// 例: worldTransformBlocks_[i][j]->SetDamageEffect() など
-					player_->IsDead();  // プレイヤーを死亡状態にする
 				}
 			}
 			else {

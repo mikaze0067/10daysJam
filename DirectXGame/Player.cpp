@@ -191,6 +191,7 @@ void Player::ChecMapCollisionUp(CollisionMapInfo& info) {
 		hit = true;
 	}
 	if (mapChipType == MapChipType::kDamageBlock && mapChipTypeNext != MapChipType::kDamageBlock) {
+		hit = true;
 		damage = true;
 	}
 	// 右上点の判定
@@ -201,6 +202,7 @@ void Player::ChecMapCollisionUp(CollisionMapInfo& info) {
 		hit = true;
 	}
 	if (mapChipType == MapChipType::kDamageBlock && mapChipTypeNext != MapChipType::kDamageBlock) {
+		hit = true;
 		damage = true;
 	}
 	// ブロックにヒット
@@ -216,23 +218,13 @@ void Player::ChecMapCollisionUp(CollisionMapInfo& info) {
 			info.move.y = std::max(0.0f, rect.bottom - worldTransform_.translation_.y - (kHeight / 2.0f + kBlank));
 			// 天井に当たったことを記録する
 			info.ceiling = true;
+			//ダメージブロックに当たったら
+			if (damage) {
+				isDead_ = true;
+			}
 		}
 	}
-	if (damage) {
-		// 現在座標が壁の外か判定
-		MapChipField::IndexSet indexSetNow;
-		indexSetNow = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + Vector3(0, +kHeight / 2.0f, 0));
-		if (indexSetNow.yIndex != indexSet.yIndex) {
-			// めり込みを排除する方向に移動量を設定する
-			indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + info.move + Vector3(0, +kHeight / 2.0f, 0));
-			// めり込み先のブロックの範囲矩形
-			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
-			info.move.y = std::max(0.0f, rect.bottom - worldTransform_.translation_.y - (kHeight / 2.0f + kBlank));
-			// 天井に当たったことを記録する
-			info.ceiling = true;
-			isDead_ = true;
-		}
-	}
+	
 }
 
 void Player::ChecMapCollisionDown(CollisionMapInfo& info) {
@@ -263,6 +255,7 @@ void Player::ChecMapCollisionDown(CollisionMapInfo& info) {
 		hit = true;
 	}
 	if (mapChipType == MapChipType::kDamageBlock && mapChipTypeNext != MapChipType::kDamageBlock) {
+		hit = true;
 		damage = true;
 	}
 	// 右下点の判定
@@ -273,6 +266,7 @@ void Player::ChecMapCollisionDown(CollisionMapInfo& info) {
 		hit = true;
 	}
 	if (mapChipType == MapChipType::kDamageBlock && mapChipTypeNext != MapChipType::kDamageBlock) {
+		hit = true;
 		damage = true;
 	}
 	// ブロックにヒット？
@@ -286,21 +280,10 @@ void Player::ChecMapCollisionDown(CollisionMapInfo& info) {
 			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
 			info.move.y = std::min(0.0f, rect.top - worldTransform_.translation_.y + (kHeight / 2.0f + kBlank));
 			info.landing = true;
-		}
-	}
-	if (damage) {
-		// 現在座標が壁の外か判定
-		MapChipField::IndexSet indexSetNow;
-		indexSetNow = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + Vector3(0, +kHeight / 2.0f, 0));
-		if (indexSetNow.yIndex != indexSet.yIndex) {
-			// めり込みを排除する方向に移動量を設定する
-			indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + info.move + Vector3(0, +kHeight / 2.0f, 0));
-			// めり込み先のブロックの範囲矩形
-			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
-			info.move.y = std::max(0.0f, rect.bottom - worldTransform_.translation_.y - (kHeight / 2.0f + kBlank));
-			// 天井に当たったことを記録する
-			info.ceiling = true;
-			isDead_ = true;
+			//ダメージブロックに当たったら
+			if (damage) {
+				isDead_ = true;
+			}
 		}
 	}
 }
@@ -332,6 +315,7 @@ void Player::ChecMapCollisionRight(CollisionMapInfo& info) {
 		hit = true;
 	}
 	if (mapChipType == MapChipType::kDamageBlock && mapChipTypeNext != MapChipType::kDamageBlock) {
+		hit = true;
 		damage = true;
 	}
 	// 右下点の判定
@@ -342,6 +326,7 @@ void Player::ChecMapCollisionRight(CollisionMapInfo& info) {
 		hit = true;
 	}
 	if (mapChipType == MapChipType::kDamageBlock && mapChipTypeNext != MapChipType::kDamageBlock) {
+		hit = true;
 		damage = true;
 	}
 
@@ -356,21 +341,10 @@ void Player::ChecMapCollisionRight(CollisionMapInfo& info) {
 			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
 			info.move.x = std::max(0.0f, rect.left - worldTransform_.translation_.x - (kWidth / 2.0f + kBlank));
 			info.hitWall = true;
-		}
-	}
-	if (damage) {
-		// 現在座標が壁の外か判定
-		MapChipField::IndexSet indexSetNow;
-		indexSetNow = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + Vector3(0, +kHeight / 2.0f, 0));
-		if (indexSetNow.yIndex != indexSet.yIndex) {
-			// めり込みを排除する方向に移動量を設定する
-			indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + info.move + Vector3(0, +kHeight / 2.0f, 0));
-			// めり込み先のブロックの範囲矩形
-			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
-			info.move.y = std::max(0.0f, rect.bottom - worldTransform_.translation_.y - (kHeight / 2.0f + kBlank));
-			// 天井に当たったことを記録する
-			info.ceiling = true;
-			isDead_ = true;
+			//ダメージブロックに当たったら
+			if (damage) {
+				isDead_ = true;
+			}
 		}
 	}
 }
@@ -401,6 +375,7 @@ void Player::ChecMapCollisionLeft(CollisionMapInfo& info) {
 		hit = true;
 	}
 	if (mapChipType == MapChipType::kDamageBlock && mapChipTypeNext != MapChipType::kDamageBlock) {
+		hit = true;
 		damage = true;
 	}
 	// 左下点の判定
@@ -411,6 +386,7 @@ void Player::ChecMapCollisionLeft(CollisionMapInfo& info) {
 		hit = true;
 	}
 	if (mapChipType == MapChipType::kDamageBlock && mapChipTypeNext != MapChipType::kDamageBlock) {
+		hit = true;
 		damage = true;
 	}
 	// ブロックにヒット？
@@ -424,21 +400,10 @@ void Player::ChecMapCollisionLeft(CollisionMapInfo& info) {
 			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
 			info.move.x = std::min(0.0f, rect.right - worldTransform_.translation_.x + (kWidth / 2.0f + kBlank));
 			info.hitWall = true;
-		}
-	}
-	if (damage) {
-		// 現在座標が壁の外か判定
-		MapChipField::IndexSet indexSetNow;
-		indexSetNow = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + Vector3(0, +kHeight / 2.0f, 0));
-		if (indexSetNow.yIndex != indexSet.yIndex) {
-			// めり込みを排除する方向に移動量を設定する
-			indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + info.move + Vector3(0, +kHeight / 2.0f, 0));
-			// めり込み先のブロックの範囲矩形
-			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
-			info.move.y = std::max(0.0f, rect.bottom - worldTransform_.translation_.y - (kHeight / 2.0f + kBlank));
-			// 天井に当たったことを記録する
-			info.ceiling = true;
-			isDead_ = true;
+			//ダメージブロックに当たったら
+			if (damage) {
+				isDead_ = true;
+			}
 		}
 	}
 }
