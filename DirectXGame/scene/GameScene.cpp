@@ -120,6 +120,9 @@ void GameScene::Initialize() {
 	//
 	cameraController_->SetMovableArea(cameraArea);
 
+	modelDamageBlock_ = Model::CreateFromOBJ("cube", true);// ダメージブロック専用のモデルをロード
+
+
 	GenerateBlocks();
 
 	// デバッグカメラの生成
@@ -295,6 +298,7 @@ void GameScene::Draw() {
 		}
 	}
 
+
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
@@ -407,17 +411,20 @@ void GameScene::GenerateBlocks() {
 		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
 			MapChipType type = mapChipField_->GetMapChipTypeByIndex(j, i);
 
-			if (type == MapChipType::kBlock || type == MapChipType::kDamageBlock) {
+			if (type == MapChipType::kBlock) {
+				// 通常ブロックの生成処理
 				WorldTransform* worldTransform = new WorldTransform();
 				worldTransform->Initialize();
 				worldTransformBlocks_[i][j] = worldTransform;
 				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
+			}
+			else if (type == MapChipType::kDamageBlock) {
+				// ダメージブロックの生成処理
+				WorldTransform* damageBlock = new WorldTransform();
+				damageBlock->Initialize();
+				worldTransformBlocks_[i][j] = damageBlock;
+				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
 
-				// ダメージブロックの場合の処理（必要に応じて）
-				if (type == MapChipType::kDamageBlock) {
-					// ダメージブロック固有の設定があればここで行う
-					// 例: worldTransformBlocks_[i][j]->SetDamageEffect() など
-				}
 			}
 			else {
 				worldTransformBlocks_[i][j] = nullptr;
