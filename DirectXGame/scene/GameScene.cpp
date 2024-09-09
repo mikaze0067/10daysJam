@@ -59,7 +59,7 @@ void GameScene::Initialize() {
 	mapChipField_->LoadMapChipCsv("./Resources/map.csv");
 
 	// 座標をマップチップ番号で指定
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(9, 9);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(2, 15);
 	// 座標をマップチップ番号で指定
 	// Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(10, 18);
 
@@ -88,17 +88,13 @@ void GameScene::Initialize() {
 	enemy_->SetMapChipField(mapChipField_);*/
 
 	//ゴールの生成
-	for (int32_t i = 1; i < 52; ++i) {
-		modelGoal_ = Model::CreateFromOBJ("cube", true);
-		Goal* newgoal_ = new Goal();
-		
-		Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(i, 98);
+	goal_ = new Goal();
+	modelGoal_ = Model::CreateFromOBJ("cube", true);
+	Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(40, 18);
 
-		newgoal_->Initialize(modelGoal_, &viewProjection_, goalPosition);
+	goal_->Initialize(modelGoal_, &viewProjection_, goalPosition);
 
-		goal_.push_back(newgoal_);
-	}
-	
+	goal_->SetMapChipField(mapChipField_);
 
 
 	// ゲームプレイフェーズから開始
@@ -158,11 +154,7 @@ void GameScene::Update() {
 			enemy->Update();
 		}
 
-		for (Goal* goal : goal_) {
-		
-			goal->Update();
-		}
-		
+		goal_->Update();
 
 		ChangePhase();
 
@@ -217,10 +209,7 @@ void GameScene::Update() {
 			enemy->Update();
 		}
 
-		for (Goal* goal : goal_)  {
-			goal->Update();
-		}
-		
+		goal_->Update();
 
 
 		//
@@ -290,10 +279,7 @@ void GameScene::Draw() {
 		enemy->Draw();
 	}
 
-	for (Goal* goal : goal_) {
-		goal->Draw();
-	}
-	
+	goal_->Draw();
 
 	if (deathParticles_) {
 		deathParticles_->Draw();
@@ -393,28 +379,20 @@ void GameScene::CheckGoalCollisions() {
 	// 判定対象1と2の座標
 	AABB aabb1, aabb2;
 
-
 	// 自キャラの座標
 	aabb1 = player_->GetAABB();
 
+	// 自キャラと敵弾すべての当たり判定
+	// 敵弾の座標
+	aabb2 = goal_->GetAABB();
 
-	// 自キャラとgola
-	for (Goal* goal : goal_) {
-		// goalの座標
-		aabb2 = goal->GetAABB();
-
-		// AABB同士の交差判定
-		if (IsCollision(aabb1, aabb2)) {
-			// 自キャラの衝突時コールバックを呼び起こす
-			player_->OnCollision(goal);
-			// ゴール時
-			goal->OnCollision(player_);
-		}
+	// AABB同士の交差判定
+	if (IsCollision(aabb1, aabb2)) {
+		// 自キャラの衝突時コールバックを呼び起こす
+		player_->OnCollision(goal_);
+		// ゴール時
+		goal_->OnCollision(player_);
 	}
-	
-
-	
-	
 }
 
 void GameScene::GenerateBlocks() {
@@ -447,11 +425,6 @@ void GameScene::GenerateBlocks() {
 				worldTransformBlocks_[i][j] = damageBlock;
 				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
 
-				// ダメージブロックの場合の処理（必要に応じて）
-				if (type == MapChipType::kDamageBlock) {
-					// ダメージブロック固有の設定があればここで行う
-					// 例: worldTransformBlocks_[i][j]->SetDamageEffect() など
-				}
 			}
 			else {
 				worldTransformBlocks_[i][j] = nullptr;
