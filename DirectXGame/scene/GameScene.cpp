@@ -405,14 +405,25 @@ void GameScene::GenerateBlocks() {
 
 	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
 		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
-			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock) {
+			MapChipType type = mapChipField_->GetMapChipTypeByIndex(j, i);
+
+			if (type == MapChipType::kBlock || type == MapChipType::kDamageBlock) {
 				WorldTransform* worldTransform = new WorldTransform();
 				worldTransform->Initialize();
 				worldTransformBlocks_[i][j] = worldTransform;
 				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
-			} else {
+
+				// ダメージブロックの場合の処理（必要に応じて）
+				if (type == MapChipType::kDamageBlock) {
+					// ダメージブロック固有の設定があればここで行う
+					// 例: worldTransformBlocks_[i][j]->SetDamageEffect() など
+					player_->IsDead();  // プレイヤーを死亡状態にする
+				}
+			}
+			else {
 				worldTransformBlocks_[i][j] = nullptr;
 			}
 		}
 	}
+
 }
