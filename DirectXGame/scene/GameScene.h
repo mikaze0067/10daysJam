@@ -92,7 +92,7 @@ private: // メンバ変数
 	// Enemy* enemy_ = nullptr;
 	std::list<Enemy*> enemies_;
 	//ゴール
-	Goal* goal_ = nullptr;
+	std::list<Goal*> goal_;
 
 	DeathParticles* deathParticles_ = nullptr;
 	// ゲームのフェーズ（型）
