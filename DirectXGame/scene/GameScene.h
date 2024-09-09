@@ -76,6 +76,7 @@ private: // メンバ変数
 	Model* modelEnemy_ = nullptr;
 	Model* modelDeathParticles = nullptr;
 	Model* modelGoal_ = nullptr;
+	Model* modelDamageBlock_ = nullptr;
 
 
 	// ワールドトランスフォーム
