@@ -180,6 +180,8 @@ void Player::ChecMapCollisionUp(CollisionMapInfo& info) {
 	MapChipType mapChipTypeNext;
 	// 真上の当たり判定を行う
 	bool hit = false;
+	//ダメージ
+	bool damage = false;
 	// 左上点の判定
 	MapChipField::IndexSet indexSet;
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionNew[kLeftTop]);
@@ -188,12 +190,20 @@ void Player::ChecMapCollisionUp(CollisionMapInfo& info) {
 	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
 	}
+	if (mapChipType == MapChipType::kDamageBlock && mapChipTypeNext != MapChipType::kDamageBlock) {
+		hit = true;
+		damage = true;
+	}
 	// 右上点の判定
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionNew[kRightTop]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
 	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex + 1);
 	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
+	}
+	if (mapChipType == MapChipType::kDamageBlock && mapChipTypeNext != MapChipType::kDamageBlock) {
+		hit = true;
+		damage = true;
 	}
 	// ブロックにヒット
 	if (hit) {
@@ -208,8 +218,13 @@ void Player::ChecMapCollisionUp(CollisionMapInfo& info) {
 			info.move.y = std::max(0.0f, rect.bottom - worldTransform_.translation_.y - (kHeight / 2.0f + kBlank));
 			// 天井に当たったことを記録する
 			info.ceiling = true;
+			//ダメージブロックに当たったら
+			if (damage) {
+				isDead_ = true;
+			}
 		}
 	}
+	
 }
 
 void Player::ChecMapCollisionDown(CollisionMapInfo& info) {
@@ -229,6 +244,8 @@ void Player::ChecMapCollisionDown(CollisionMapInfo& info) {
 	MapChipType mapChipTypeNext;
 	// 真上の当たり判定を行う
 	bool hit = false;
+	//ダメージ
+	bool damage = false;
 	// 左下点の判定
 	MapChipField::IndexSet indexSet;
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionNew[kLeftBottom]);
@@ -237,6 +254,10 @@ void Player::ChecMapCollisionDown(CollisionMapInfo& info) {
 	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
 	}
+	if (mapChipType == MapChipType::kDamageBlock && mapChipTypeNext != MapChipType::kDamageBlock) {
+		hit = true;
+		damage = true;
+	}
 	// 右下点の判定
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionNew[kRightBottom]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
@@ -244,7 +265,10 @@ void Player::ChecMapCollisionDown(CollisionMapInfo& info) {
 	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
 	}
-
+	if (mapChipType == MapChipType::kDamageBlock && mapChipTypeNext != MapChipType::kDamageBlock) {
+		hit = true;
+		damage = true;
+	}
 	// ブロックにヒット？
 	if (hit) {
 		// 現在座標が壁の外か判定
@@ -256,6 +280,10 @@ void Player::ChecMapCollisionDown(CollisionMapInfo& info) {
 			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
 			info.move.y = std::min(0.0f, rect.top - worldTransform_.translation_.y + (kHeight / 2.0f + kBlank));
 			info.landing = true;
+			//ダメージブロックに当たったら
+			if (damage) {
+				isDead_ = true;
+			}
 		}
 	}
 }
@@ -276,6 +304,8 @@ void Player::ChecMapCollisionRight(CollisionMapInfo& info) {
 	MapChipType mapChipTypeNext;
 	// 真上の当たり判定を行う
 	bool hit = false;
+	//ダメージ
+	bool damage = false;
 	// 右上点の判定
 	MapChipField::IndexSet indexSet;
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionNew[kRightTop]);
@@ -284,12 +314,20 @@ void Player::ChecMapCollisionRight(CollisionMapInfo& info) {
 	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
 	}
+	if (mapChipType == MapChipType::kDamageBlock && mapChipTypeNext != MapChipType::kDamageBlock) {
+		hit = true;
+		damage = true;
+	}
 	// 右下点の判定
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionNew[kRightBottom]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
 	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex - 1, indexSet.yIndex);
 	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
+	}
+	if (mapChipType == MapChipType::kDamageBlock && mapChipTypeNext != MapChipType::kDamageBlock) {
+		hit = true;
+		damage = true;
 	}
 
 	// ブロックにヒット？
@@ -303,6 +341,10 @@ void Player::ChecMapCollisionRight(CollisionMapInfo& info) {
 			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
 			info.move.x = std::max(0.0f, rect.left - worldTransform_.translation_.x - (kWidth / 2.0f + kBlank));
 			info.hitWall = true;
+			//ダメージブロックに当たったら
+			if (damage) {
+				isDead_ = true;
+			}
 		}
 	}
 }
@@ -322,6 +364,8 @@ void Player::ChecMapCollisionLeft(CollisionMapInfo& info) {
 	MapChipType mapChipType;
 	MapChipType mapChipTypeNext;
 	bool hit = false;
+	//ダメージ
+	bool damage = false;
 	// 左上点の判定
 	MapChipField::IndexSet indexSet;
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionNew[kLeftTop]);
@@ -330,6 +374,10 @@ void Player::ChecMapCollisionLeft(CollisionMapInfo& info) {
 	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
 	}
+	if (mapChipType == MapChipType::kDamageBlock && mapChipTypeNext != MapChipType::kDamageBlock) {
+		hit = true;
+		damage = true;
+	}
 	// 左下点の判定
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionNew[kLeftBottom]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
@@ -337,7 +385,10 @@ void Player::ChecMapCollisionLeft(CollisionMapInfo& info) {
 	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
 	}
-
+	if (mapChipType == MapChipType::kDamageBlock && mapChipTypeNext != MapChipType::kDamageBlock) {
+		hit = true;
+		damage = true;
+	}
 	// ブロックにヒット？
 	if (hit) {
 		// 現在座標が壁の外か判定
@@ -349,6 +400,10 @@ void Player::ChecMapCollisionLeft(CollisionMapInfo& info) {
 			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
 			info.move.x = std::min(0.0f, rect.right - worldTransform_.translation_.x + (kWidth / 2.0f + kBlank));
 			info.hitWall = true;
+			//ダメージブロックに当たったら
+			if (damage) {
+				isDead_ = true;
+			}
 		}
 	}
 }
@@ -400,10 +455,16 @@ void Player::UpdateOnGround(const CollisionMapInfo& info) {
 			if (mapChipType == MapChipType::kBlock) {
 				ground = true;
 			}
+			if (mapChipType == MapChipType::kDamageBlock) {
+				ground = true;
+			}
 			indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionNew[kRightBottom] + Vector3(0, -kGroundSearchHeight, 0));
 			mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
 
 			if (mapChipType == MapChipType::kBlock) {
+				ground = true;
+			}
+			if (mapChipType == MapChipType::kDamageBlock) {
 				ground = true;
 			}
 

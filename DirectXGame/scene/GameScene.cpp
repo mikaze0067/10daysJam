@@ -120,6 +120,9 @@ void GameScene::Initialize() {
 	//
 	cameraController_->SetMovableArea(cameraArea);
 
+	modelDamageBlock_ = Model::CreateFromOBJ("cube", true);// ダメージブロック専用のモデルをロード
+
+
 	GenerateBlocks();
 
 	// デバッグカメラの生成
@@ -295,6 +298,7 @@ void GameScene::Draw() {
 		}
 	}
 
+
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
@@ -405,14 +409,27 @@ void GameScene::GenerateBlocks() {
 
 	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
 		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
-			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock) {
+			MapChipType type = mapChipField_->GetMapChipTypeByIndex(j, i);
+
+			if (type == MapChipType::kBlock) {
+				// 通常ブロックの生成処理
 				WorldTransform* worldTransform = new WorldTransform();
 				worldTransform->Initialize();
 				worldTransformBlocks_[i][j] = worldTransform;
 				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
-			} else {
+			}
+			else if (type == MapChipType::kDamageBlock) {
+				// ダメージブロックの生成処理
+				WorldTransform* damageBlock = new WorldTransform();
+				damageBlock->Initialize();
+				worldTransformBlocks_[i][j] = damageBlock;
+				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
+
+			}
+			else {
 				worldTransformBlocks_[i][j] = nullptr;
 			}
 		}
 	}
+
 }
