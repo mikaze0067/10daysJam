@@ -12,6 +12,10 @@ void Goal::Initialize(Model* model, ViewProjection* viewProjection, const Vector
 	viewProjection_ = viewProjection;
 }
 
+
+
+
+
 void Goal::Update() {
 	// 行列計算
 	worldTransform_.UpdateMatrix();
