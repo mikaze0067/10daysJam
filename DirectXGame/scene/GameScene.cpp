@@ -303,12 +303,24 @@ void GameScene::Draw() {
 	//skydome_->Draw();
 
 	// 縦横ブロック描画
-	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
-		for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
-			if (!worldTransformBlockYoko)
+		for (uint32_t i = 0; i < worldTransformBlocks_.size(); ++i) {
+		for (uint32_t j = 0; j < worldTransformBlocks_[i].size(); ++j) {
+			WorldTransform* worldTransformBlock = worldTransformBlocks_[i][j];
+			if (!worldTransformBlock)
 				continue;
 
-			modelBlock_->Draw(*worldTransformBlockYoko, viewProjection_);
+			// インデックスとしてiをyIndex、jをxIndexとして扱う
+			uint32_t xIndex = j;
+			uint32_t yIndex = i;
+
+			// kBlockの場合
+			if (mapChipField_->GetMapChipTypeByIndex(xIndex, yIndex) == MapChipType::kBlock) {
+				modelBlock_->Draw(*worldTransformBlock, viewProjection_);
+			}
+			// kDamageBlockの場合
+			else if (mapChipField_->GetMapChipTypeByIndex(xIndex, yIndex) == MapChipType::kDamageBlock) {
+				modelDamageBlock_->Draw(*worldTransformBlock, viewProjection_);
+			}
 		}
 	}
 
@@ -446,17 +458,10 @@ void GameScene::GenerateBlocks() {
 				damageBlock->Initialize();
 				worldTransformBlocks_[i][j] = damageBlock;
 				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
-
-				// ダメージブロックの場合の処理（必要に応じて）
-				if (type == MapChipType::kDamageBlock) {
-					// ダメージブロック固有の設定があればここで行う
-					// 例: worldTransformBlocks_[i][j]->SetDamageEffect() など
-				}
 			}
 			else {
 				worldTransformBlocks_[i][j] = nullptr;
 			}
 		}
 	}
-
 }
