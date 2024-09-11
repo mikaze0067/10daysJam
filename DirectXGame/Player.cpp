@@ -220,7 +220,8 @@ void Player::ChecMapCollisionUp(CollisionMapInfo& info) {
 			info.ceiling = true;
 			//ダメージブロックに当たったら
 			if (damage) {
-				isDead_ = true;
+				Hit();
+				//isDead_ = true;
 			}
 		}
 	}
@@ -282,7 +283,8 @@ void Player::ChecMapCollisionDown(CollisionMapInfo& info) {
 			info.landing = true;
 			//ダメージブロックに当たったら
 			if (damage) {
-				isDead_ = true;
+				Hit();
+				//isDead_ = true;
 			}
 		}
 	}
@@ -343,7 +345,8 @@ void Player::ChecMapCollisionRight(CollisionMapInfo& info) {
 			info.hitWall = true;
 			//ダメージブロックに当たったら
 			if (damage) {
-				isDead_ = true;
+				Hit();
+				//isDead_ = true;
 			}
 		}
 	}
@@ -402,7 +405,8 @@ void Player::ChecMapCollisionLeft(CollisionMapInfo& info) {
 			info.hitWall = true;
 			//ダメージブロックに当たったら
 			if (damage) {
-				isDead_ = true;
+				Hit();
+				//isDead_ = true;
 			}
 		}
 	}

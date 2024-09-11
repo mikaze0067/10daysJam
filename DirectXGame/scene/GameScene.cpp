@@ -59,7 +59,7 @@ void GameScene::Initialize() {
 	mapChipField_->LoadMapChipCsv("./Resources/map.csv");
 
 	// 座標をマップチップ番号で指定
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(9, 9);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(5, 9);
 	// 座標をマップチップ番号で指定
 	// Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(10, 18);
 

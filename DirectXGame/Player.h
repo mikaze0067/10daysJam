@@ -73,6 +73,16 @@ public:
 	//ゴールフラグgetter
 	bool IsGoal() const { return isGoal_; }
 
+	Player() : hitCount_(0), isDead_(false) {}
+
+	void Hit() {
+		hitCount_++;
+		if (hitCount_ >= 3) {
+			isDead_ = true;
+		}
+	}
+
+
 	private:
 
 	static inline const float kAcceleration = 0.1f;
@@ -126,6 +136,9 @@ public:
 	float turnTimer_ = 0.0f;
 	// マップチップによるフィールド
 	MapChipField* mapChipField_ = nullptr;
+
+	// 被弾した回数
+	int hitCount_;
 
 	void inputMove();
 
