@@ -122,4 +122,5 @@ private: // メンバ変数
 	CameraController* cameraController_ = nullptr;
 	// 終了フラグ
 	bool finished_ = false;
+
 };

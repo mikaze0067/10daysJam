@@ -88,6 +88,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	clearScene = new ClearScene();
 	clearScene->Initialize();
 	
+	uint32_t soundDataHandle_ = audio->LoadWave("GameBgm.mp3");
+	uint32_t voiceHandle_ = 0;
+	voiceHandle_ = audio->PlayWave(soundDataHandle_, true);
 
 	// メインループ
 	while (true) {

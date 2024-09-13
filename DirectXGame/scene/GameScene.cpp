@@ -100,7 +100,6 @@ void GameScene::Initialize() {
 	}
 	
 
-
 	// ゲームプレイフェーズから開始
 	phase_ = Phase::kPlay;
 
