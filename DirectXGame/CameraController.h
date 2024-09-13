@@ -33,7 +33,15 @@ public: // メンバ関数
 	//カメラの目標座標
 	Vector3 cameraTarget;
 
-	private: // メンバ変数
+	float GetCameraTop() { return cameraTop; };
+
+	float GetCameraBottom() { return cameraBottom; };
+
+	float cameraTop = 100;
+
+	float cameraBottom = 85;
+
+private: // メンバ変数
 
 	// ビュープロジェクション
 	ViewProjection viewProjection_;

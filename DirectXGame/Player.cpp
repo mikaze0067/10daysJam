@@ -525,3 +525,10 @@ Vector3 Player::CornerPosition(const Vector3& center, Corner corner) {
 
 	    return center + offsetTable[static_cast<uint32_t>(corner)];
     }
+
+void Player::CameraArea(float cameraTop_, float camerabottom) {
+
+	if (worldTransform_.translation_.y > cameraTop_ || worldTransform_.translation_.y < camerabottom) {
+		isDead_ = true;
+	}
+}

@@ -34,6 +34,9 @@ void CameraController::Update() {
 
 	cameraMove += 0.00001f;
 
+	cameraBottom -= cameraMove;
+
+	cameraTop -= cameraMove;
 
 	viewProjection_.translation_.y -= cameraMove;
 

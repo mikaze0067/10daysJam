@@ -10,6 +10,7 @@
 class MapChipField;
 class Enemy;
 class Goal;
+class CameraController;
 
 /// <summary>
 /// 自キャラ
@@ -82,6 +83,7 @@ public:
 		}
 	}
 
+	void CameraArea(float cameraTop_, float camerabottom);
 
 	private:
 
