@@ -24,10 +24,11 @@ void TitleScene::Update() {
 }
 
 void TitleScene::Draw() {
+	/*	
 	DirectXCommon* dxCommon_ = DirectXCommon::GetInstance();
-	// コマンドリストの取得
+	コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
 
 	Model::PreDraw(commandList);
-	
+	*/
 }
