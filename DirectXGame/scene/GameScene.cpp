@@ -169,6 +169,8 @@ void GameScene::Update() {
 		// カメラコントローラの更新
 		cameraController_->Update();
 
+		player_->CameraArea(cameraController_->cameraTop, cameraController_->cameraBottom);
+
 		// カメラ処理
 		if (isDebugCameraActive_) {
 			// デバッグカメラの更新

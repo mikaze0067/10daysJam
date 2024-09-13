@@ -39,7 +39,7 @@ public: // メンバ関数
 
 	float cameraTop = 100;
 
-	float cameraBottom = 85;
+	float cameraBottom = 82;
 
 private: // メンバ変数
 
