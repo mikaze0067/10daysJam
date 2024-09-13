@@ -3,7 +3,7 @@
 #include "Model.h"
 #include"ViewProjection.h"
 #include"WorldTransform.h"
-
+#include "Sprite.h"
 
 class TitleScene {
 public:
@@ -48,4 +48,9 @@ private:
 
 	// 経過時間
 	float timer_ = 0.0f;
+
+	uint32_t textureHandle_ = 0;
+
+	Sprite* sprite_ = nullptr;
+
 };

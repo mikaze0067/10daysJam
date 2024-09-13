@@ -69,7 +69,7 @@ private: // メンバ変数
 	/// </summary>
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
-
+	
 	// 3Dモデル
 	Model* model_ = nullptr;
 	Model* modelBlock_ = nullptr;
