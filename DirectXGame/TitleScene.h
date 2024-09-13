@@ -28,7 +28,7 @@ public:
 private:
 
 	ViewProjection viewProjection_;
-	WorldTransform worldTransformTitle_;
+	WorldTransform titleWorldTransform_;
 	WorldTransform worldTransformPlayer_;
 
 	Model* model_ = nullptr;
@@ -36,5 +36,16 @@ private:
 	float counter_ = 0.0f;
 	// 終了フラグ
 	bool finished_ = false;
-	static inline const float kTimeTitleMove = 2.0f;
+
+	// 最初の角度
+	static inline const float TitlePositionStart = 0.1f;
+
+	// 最後の角度
+	static inline const float TitlePositionEnd = -0.1f;
+
+	// アニメーションの周期
+	static inline const float TitleTime = 2.0f;
+
+	// 経過時間
+	float timer_ = 0.0f;
 };
